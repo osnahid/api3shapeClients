@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Materiel;
+use App\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
@@ -41,8 +42,8 @@ class MaterielController extends Controller
         $materiel->hasSoftware = $request['hasSoftware'];
         $materiel->characteristics = $request['characteristics'];
         $materiel->company_id = $company_id;
-
-        if ($materiel->save() && App\Company::find($company_id)) {
+        $company = Company::find($company_id);
+        if ($materiel->save() && $company) {
             $res['materiel'] = $materiel;
             $res['status'] = 'materiel added succefully';
             return response()->json($res, 200);
@@ -112,7 +113,7 @@ class MaterielController extends Controller
             $res['status'] = 'the materiel was deleted';
             return response()->json($res, 200);
         } else {
-            return response()->json(['error'=>'employe not found'], 401);
+            return response()->json(['error'=>'materiel not found'], 401);
         }
     }
 }

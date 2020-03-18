@@ -15,7 +15,6 @@ class CreateSoftwareTable extends Migration
     {
         Schema::create('software', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->nullable();
             $table->string('name');
             $table->string('version');
             $table->boolean('hasSubscription')->nullable()->default(false);

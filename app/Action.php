@@ -12,14 +12,15 @@ class Action extends Model
 
     use SoftDeletes;
 
+
     public function account()
     {
         return $this->belongsTo('App\Account', 'account_id');
     }
 
-    public function material()
+    public function materiel()
     {
-        return $this->belongsTo('App\Material', 'material_id');
+        return $this->belongsTo('App\Materiel', 'materiel_id');
     }
 
     public function software()

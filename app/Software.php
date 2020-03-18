@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Software extends Model
 {
-    protected $table = 'softwares';
+    protected $table = 'software';
     use SoftDeletes;
 
     public function company()

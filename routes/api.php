@@ -59,7 +59,12 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('softwares/{id}', 'API\SoftwareController@update');
     Route::delete('softwares/{id}', 'API\SoftwareController@destroy');
 
-    //subscription endpoints
+    //action endpoints
+    Route::get('actions', 'API\ActionController@index');
+    Route::get('actions/{id}', 'API\ActionController@show');
+    Route::post('actions', 'API\ActionController@store');
+    Route::post('actions/{id}', 'API\ActionController@update');
+    Route::delete('actions/{id}', 'API\ActionController@destroy');
 
 });
 
