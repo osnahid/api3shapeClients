@@ -72,11 +72,10 @@ class EmployeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $customer_id, $id)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'email',
             'type' => 'required',
             'phone' => 'required'
         ]);
@@ -93,7 +92,7 @@ class EmployeController extends Controller
 
             if ($employe->save()) {
                 $res['employe'] = $employe;
-                $res['status'] = 'employe added succefully';
+                $res['status'] = 'employe updated succefully';
                 return response()->json($res, 200);
             } else {
                 return response()->json(['error'=>'something happend'], 401);

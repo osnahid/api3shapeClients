@@ -38,11 +38,21 @@ class CompanyController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 401);
         }
+
         $company = new Company();
         $company->name = $request->name;
         $company->location = $request->location;
         $company->phone = $request->phone;
         $company->support_email = $request->support_email;
+
+        if ($request->hasFile('logo')) {
+            $file      = $request->file('logo');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('His').'-'.$filename;
+            $path = $file->move(public_path('uploads/companiesLogos'), $picture);
+            $company->logo = str_replace(public_path(), '', $path);
+        }
 
         if ($company->save()) {
             $res['company'] = $company;
@@ -51,6 +61,7 @@ class CompanyController extends Controller
         } else {
             return response()->json(['error'=>'something happend'], 401);
         }
+
     }
 
     /**
@@ -94,6 +105,14 @@ class CompanyController extends Controller
         $company->location = $request->location;
         $company->phone = $request->phone;
         $company->support_email = $request->support_email;
+        if ($request->hasFile('logo')) {
+            $file      = $request->file('logo');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('His').'-'.$filename;
+            $path = $file->move(public_path('uploads/companiesLogos'), $picture);
+            $company->logo = str_replace(public_path(), '', $path);
+        }
 
         if ($company->save()) {
             $res['company'] = $company;
@@ -114,15 +133,7 @@ class CompanyController extends Controller
     {
         //
         if(Company::find($id)) {
-            $array_softwares = Company::find($id)->softwares;
-            $array_materials = Company::find($id)->materials;
             if (Company::destroy($id)) {
-                foreach($array_materials as $mat) {
-                    App/Materiel::destroy($mat->id);
-                }
-                foreach($array_softwares as $soft) {
-                    App/Software::destroy($soft->id);
-                }
                 $res['status'] = 'the company was deleted';
                 return response()->json($res, 200);
             } else {

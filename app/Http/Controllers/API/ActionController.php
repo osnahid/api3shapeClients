@@ -106,26 +106,8 @@ class ActionController extends Controller
      */
     public function show($id)
     {
-        $action = Action::find($id);
-        if ($action) {
-            if (Materiel::find($action->materiel_id)) {
-                $action->materiel = Materiel::find($action->materiel_id);
-            }
-            if (Account::find($action->account_id)) {
-                $action->account = Account::find($action->account_id);
-            }
-            if (Customer::find($action->customer_id)) {
-                $action->customer = Customer::find($action->customer_id);
-            }
-            if (Subscription::find($action->subscription_id)) {
-                $action->subscription = Subscription::find($action->subscription_id);
-            }
-            if (Software::find($action->software_id)) {
-                $action->software = Software::find($action->software_id);
-            }
-        } else {
-            return response()->json(['error' => ''], 401);
-        }
+        $action = Action::find($id)->with(['account']);
+
 
         return response()->json($action, 200);
     }
