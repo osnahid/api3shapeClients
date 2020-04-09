@@ -17,7 +17,11 @@ class MaterielController extends Controller
      */
     public function index()
     {
-        return response()->json(Materiel::All(), 200, $headers);
+        return response()->json(Materiel::All(), 200);
+    }
+
+    public function indexByCompany($company_id) {
+        return response()->json(Materiel::All()->where('company_id', $company_id), 200);
     }
 
     /**
@@ -43,6 +47,14 @@ class MaterielController extends Controller
         $materiel->characteristics = $request['characteristics'];
         $materiel->company_id = $company_id;
         $company = Company::find($company_id);
+        if ($request->hasFile('image')) {
+            $file      = $request->file('image');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('His').'-'.$filename;
+            $path = $file->move(public_path('uploads/materialPictures'), $picture);
+            $materiel->image = str_replace(public_path(), '', $path);
+        }
         if ($materiel->save() && $company) {
             $res['materiel'] = $materiel;
             $res['status'] = 'materiel added succefully';
@@ -91,7 +103,14 @@ class MaterielController extends Controller
         $materiel->type = $request['type'];
         $materiel->hasSoftware = $request['hasSoftware'];
         $materiel->characteristics = $request['characteristics'];
-
+        if ($request->hasFile('image')) {
+            $file      = $request->file('image');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('His').'-'.$filename;
+            $path = $file->move(public_path('uploads/materialsPictures'), $picture);
+            $materiel->image = str_replace(public_path(), '', $path);
+        }
         if ($materiel->save()) {
             $res['materiel'] = $materiel;
             $res['status'] = 'materiel updated successfully';

@@ -46,14 +46,16 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::delete('companies/{id}', 'API\CompanyController@destroy');
 
     //materiel endpoints
-    Route::get('materiels', 'API\MaterielController@index');
-    Route::get('materiels/{id}', 'API\MaterielController@show');
-    Route::post('companies/{company_id}/materiels', 'API\MaterielController@store');
-    Route::post('materiels/{id}', 'API\MaterielController@update');
-    Route::delete('materiels/{id}', 'API\MaterielController@destroy');
+    Route::get('materials', 'API\MaterielController@index');
+    Route::get('companies/{company_id}/materials', 'API\MaterielController@indexByCompany');
+    Route::get('materials/{id}', 'API\MaterielController@show');
+    Route::post('companies/{company_id}/materials', 'API\MaterielController@store');
+    Route::post('materials/{id}', 'API\MaterielController@update');
+    Route::delete('materials/{id}', 'API\MaterielController@destroy');
 
     //software endpoints
     Route::get('softwares', 'API\SoftwareController@index');
+    Route::get('companies/{company_id}/softwares', 'API\SoftwareController@indexByCompany');
     Route::get('softwares/{id}', 'API\SoftwareController@show');
     Route::post('companies/{company_id}/softwares', 'API\SoftwareController@store');
     Route::post('softwares/{id}', 'API\SoftwareController@update');

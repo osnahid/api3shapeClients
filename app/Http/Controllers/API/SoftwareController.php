@@ -20,6 +20,9 @@ class SoftwareController extends Controller
         return response()->json(Software::all(), 200);
     }
 
+    public function indexByCompany($company_id) {
+        return response()->json(Software::All()->where('company_id', $company_id), 200);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -41,7 +44,14 @@ class SoftwareController extends Controller
         $soft->version = $request['version'];
         $soft->hasSubscription = $request['hasSubscription'];
         $soft->company_id = $company_id;
-
+        if ($request->hasFile('image')) {
+            $file      = $request->file('image');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('His').'-'.$filename;
+            $path = $file->move(public_path('uploads/softwaresPictures'), $picture);
+            $soft->image = str_replace(public_path(), '', $path);
+        }
         if ($soft->save() && Company::find($company_id)) {
             $res['software'] = $soft;
             $res['status'] = 'software added succefully';
@@ -91,7 +101,14 @@ class SoftwareController extends Controller
         $soft->version = $request['version'];
         $soft->hasSubscription = $request['hasSubscription'];
         $soft->company_id = $company_id;
-
+        if ($request->hasFile('image')) {
+            $file      = $request->file('image');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('His').'-'.$filename;
+            $path = $file->move(public_path('uploads/softwaresPictures'), $picture);
+            $soft->image = str_replace(public_path(), '', $path);
+        }
         if ($soft->save()) {
             $res['software'] = $soft;
             $res['status'] = 'software updated successfully';
